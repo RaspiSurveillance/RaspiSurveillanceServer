@@ -1,0 +1,109 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.1.2.RELEASE')
+    }
+}
+
+plugins {
+	id 'net.ltgt.apt' version '0.10'
+	id "org.springframework.boot" version "2.1.2.RELEASE"
+}
+
+apply plugin: 'java-library'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+springBoot {
+	mainClassName = 'de.calltopower.raspisurveillance.RSApplication'
+}
+
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = 'de.calltopower.raspisurveillance.RSApplication'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configurations.all {
+	exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	exclude group: 'commons-logging', module: 'commons-logging'
+	resolutionStrategy {
+    }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web:2.3.4.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa:2.3.4.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-log4j2:2.3.4.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-security:2.3.4.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-cache:2.3.4.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-mail:2.3.4.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-validation:2.3.4.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf:2.3.4.RELEASE')
+    compile('javax.cache:cache-api:1.1.1')
+    compile('org.hibernate:hibernate-jcache:5.4.22.Final')
+    compile('org.ehcache:ehcache:3.9.0')
+    compile('io.jsonwebtoken:jjwt:0.9.1')
+    compile('org.apache.httpcomponents:httpclient:4.5.13')
+    compile('com.google.code.gson:gson:2.8.6')
+    compile('org.mariadb.jdbc:mariadb-java-client:2.7.0')
+	compile('org.apache.commons:commons-lang3:3.11')
+	compile('org.apache.httpcomponents:httpclient:4.5.13')
+	
+    testCompile('org.springframework.boot:spring-boot-starter-test:2.3.4.RELEASE')
+    testCompile('com.h2database:h2:1.4.200')
+
+	compileOnly 'org.projectlombok:lombok:1.18.14'
+	annotationProcessor 'org.projectlombok:lombok:1.18.14'
+}
+
+configurations.compile {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
+bootJar {
+    baseName = 'ctp-raspisurveillanceserver'
+    version =  '0.00-00-SNAPSHOT'
+    mainClassName = 'de.calltopower.raspisurveillance.RSApplication'
+
+    manifest {
+        attributes 'Start-Class': 'de.calltopower.raspisurveillance.RSApplication'
+    }
+}
+
+test {
+    exclude '**/All*Tests.class'
+    if (!project.hasProperty('runIntTest')) {
+       exclude '**/*IntTest.class'
+    }
+}
+
+task zip(type: Zip, dependsOn: 'bootJar') {
+   from '.'
+   include 'src/main/resources/application.properties'
+   include 'README.md'
+   include 'scripts/*'
+   include 'build/libs/*'
+   archiveName 'raspisurveillance-server-1.5.4.zip'
+   
+    // Flatten the hierarchy by setting the path
+    // of all files to their respective basename
+    eachFile {
+      path = name
+    }
+
+    // Flattening the hierarchy leaves empty directories,
+    // do not copy those
+    includeEmptyDirs = false
+}

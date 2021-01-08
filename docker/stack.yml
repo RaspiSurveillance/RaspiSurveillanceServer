@@ -1,0 +1,60 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: calltopower/raspisurveillance-db:1.0.0
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MARIADB_USER=<dbUsername>
+      - MARIADB_ROOT_PASSWORD=<dbRootPassword>
+      - MARIADB_PASSWORD=<dbPassword>
+      - MARIADB_DATABASE=raspisurveillance
+    volumes:
+      - ./data/db:/bitnami/mariadb
+
+  flyway:
+    image: calltopower/raspisurveillance-flyway:1.0.0
+    command: migrate
+    volumes:
+      - ./flyway/config:/flyway/conf
+    depends_on:
+      - db
+
+  raspisurveillance-server:
+    image: calltopower/raspisurveillance-server:1.0.0
+    restart: always
+    ports:
+      - 9090:9090
+    depends_on:
+      - db
+    volumes:
+      - ./data/certificates:/etc/certificates
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_USERNAME=<dbUsername>
+      - SPRING_DATASOURCE_PASSWORD=<dbPassword>
+      - SECURITY_REQUIRE_SSL=true
+      - SERVER_SSL_KEYSTORE=/etc/certificates/springboot_letsencrypt.p12
+      - SERVER_SSL_KEYSTOREPASSWORD=<passwd>
+      - SERVER_SSL_KEYSTORETYPE=PKCS12
+      - SECURITY_TOKEN_SECRET=<tokenSecret>
+      - SECURITY_TOKEN_EXPIRATIONMS=86400000
+      - RASPISURVEILLANCE_SIGNUP=DISABLED
+      - RASPISURVEILLANCE_URL_PASSWORD_RESET=https://<yourUrl>/account/entertoken
+      - RASPISURVEILLANCE_URL_PASSWORD_RESET_SUCCESS=https://<yourUrl>/account/signin
+      - RASPISURVEILLANCE_URL_USER_VERIFICATION=https://<yourUrl>/users/%s/verify
+      - RASPISURVEILLANCE_CACHE_FILE_STRING_MAX=10
+      - RASPISURVEILLANCE_COMMAND_CAMERASTREAM_HAS_CAMERASTREAM=true
+      - RASPISURVEILLANCE_COMMAND_SURVEILLANCE.HAS_SURVEILLANCE=true
+      - RASPISURVEILLANCE_SAPIS_URL=http://<url>:<port>
+      - RASPISURVEILLANCE_SAPIS_NAME=<name>
+      - RASPISURVEILLANCE_SAPIS_PASSWORD=<password>
+      - SPRING_MAIL_HOST=<smtp.yourEmailProvider>
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=<username>
+      - SPRING_MAIL_PASSWORD=<password>
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true

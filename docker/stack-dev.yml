@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: calltopower/raspisurveillance-db:1.0.0
+    restart: always
+    volumes:
+      - ./db/data:/bitnami/mariadb
+    ports:
+      - 3306:3306
+    environment:
+      - MARIADB_USER=admin
+      - MARIADB_ROOT_PASSWORD=example
+      - MARIADB_PASSWORD=example
+      - MARIADB_DATABASE=raspisurveillance
+
+  flyway:
+    image: calltopower/raspisurveillance-flyway:1.0.0
+    command: migrate
+    volumes:
+      - ./flyway/config:/flyway/conf
+    depends_on:
+      - db
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
