@@ -162,7 +162,7 @@ public class RSServerController implements RSController {
 	@SuppressWarnings("javadoc")
 	@PutMapping(path = "/{id}/stop", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public RSServerDto stopServices(@NotNull @PathVariable(name = "id") String id,
+	public RSServerDto stopServicesOnServer(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Requested updating server");
@@ -188,6 +188,22 @@ public class RSServerController implements RSController {
 			return serverDtoService.convert(serverService.refreshServer(userDetails, id));
 		} else {
 			return serverDtoService.convertAbridged(serverService.refreshServer(userDetails, id));
+		}
+	}
+
+	@SuppressWarnings("javadoc")
+	@PutMapping(path = "/{id}/shutdown", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public RSServerDto shutdownServer(@NotNull @PathVariable(name = "id") String id,
+			@AuthenticationPrincipal UserDetails userDetails) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Shutting down server");
+		}
+
+		if (authService.isAdmin(authService.authenticate(userDetails))) {
+			return serverDtoService.convert(serverService.shutdownServer(userDetails, id));
+		} else {
+			return serverDtoService.convertAbridged(serverService.shutdownServer(userDetails, id));
 		}
 	}
 

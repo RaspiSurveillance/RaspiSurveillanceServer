@@ -282,6 +282,56 @@ public class RSServerService implements RSService {
 	}
 
 	/**
+	 * Shuts down the server
+	 * 
+	 * @param userDetails The user authentication
+	 * @param strId       the ID
+	 */
+	@Transactional(readOnly = false)
+	public RSServerModel shutdownServer(UserDetails userDetails, String strId) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(String.format("Shuttin down server with ID \"%s\"", strId));
+		}
+
+		RSServerModel server = getServer(userDetails, strId);
+
+		stopAll(server);
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Creating HTTP client");
+		}
+		try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+			String url = String.format("%s/shutdown", server.getUrl());
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug(String.format("URL: %s", url));
+			}
+			HttpPut httpPut = new HttpPut(url);
+
+			UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(server.getUsername(),
+					server.getPassword());
+			httpPut.addHeader(new BasicScheme().authenticate(credentials, httpPut, null));
+			httpPut.setHeader("Content-type", "application/json");
+
+			ResponseHandler<Boolean> responseHandler = response -> {
+				int status = response.getStatusLine().getStatusCode();
+				return status >= 200 && status < 300;
+			};
+
+			Boolean responseBody = httpclient.execute(httpPut, responseHandler);
+			if (responseBody.booleanValue()) {
+				server.setStatus(RSServerStatus.OFFLINE);
+			} else {
+				serverRepository.saveAndFlush(server);
+				throw new RSFunctionalException("Could not shut down server");
+			}
+		} catch (Exception e) {
+			throw new RSFunctionalException("Could not shut down server");
+		}
+
+		return serverRepository.saveAndFlush(server);
+	}
+
+	/**
 	 * Refreshes the status of a given server
 	 * 
 	 * @param server The server to be refreshed
@@ -291,6 +341,10 @@ public class RSServerService implements RSService {
 	public RSServerModel refreshServerStatus(RSServerModel server, boolean flush) {
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info(String.format("Refreshing local server \"%s\"", server.getName()));
+		}
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Creating HTTP client");
 		}
 		try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
 			String url = String.format("%s/start/camerastream", server.getUrl());
@@ -312,9 +366,9 @@ public class RSServerService implements RSService {
 			if (responseBody.booleanValue()) {
 				if (server.getStatus() == RSServerStatus.OFFLINE) {
 					server.setStatus(RSServerStatus.ONLINE);
-				} else {
-					server.setStatus(RSServerStatus.OFFLINE);
 				}
+			} else {
+				server.setStatus(RSServerStatus.OFFLINE);
 			}
 		} catch (Exception e) {
 			LOGGER.error(String.format("Could not refresh server status of server \"%s\" (\"%s\")", server.getName(),
