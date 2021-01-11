@@ -18,13 +18,13 @@ import lombok.NoArgsConstructor;
 @Service
 public class RSServerDtoService implements RSDtoService<RSServerDto, RSServerModel> {
 
-	@Override
-	public RSServerDto convert(RSServerModel model) {
-		if (model == null) {
-			return null;
-		}
+    @Override
+    public RSServerDto convert(RSServerModel model) {
+        if (model == null) {
+            return null;
+        }
 
-		// @formatter:off
+        // @formatter:off
         return RSServerDto.builder()
                 .id(model.getId())
                 //.createdDate(model.getCreatedDate())
@@ -32,6 +32,13 @@ public class RSServerDtoService implements RSDtoService<RSServerDto, RSServerMod
                 .url(model.getUrl())
                 .username(model.getUsername())
                 .password(model.getPassword())
+                .isMaster(model.isMaster())
+                .hasServiceCamerastream(model.isHasServiceCamerastream())
+                .hasServiceSurveillance(model.isHasServiceSurveillance())
+                .urlMaster(model.getUrlMaster())
+                .idMaster(model.getIdMaster())
+                .usernameMaster(model.getUsernameMaster())
+                .passwordMaster(model.getPasswordMaster())
                 .urlCamerastream(model.getUrlCamerastream())
                 .usernameCamerastream(model.getUsernameCamerastream())
                 .passwordCamerastream(model.getPasswordCamerastream())
@@ -41,19 +48,22 @@ public class RSServerDtoService implements RSDtoService<RSServerDto, RSServerMod
                 .jsonData(model.getJsonData())
                 .build();
         // @formatter:on
-	}
+    }
 
-	@Override
-	public RSServerDto convertAbridged(RSServerModel model) {
-		if (model == null) {
-			return null;
-		}
+    @Override
+    public RSServerDto convertAbridged(RSServerModel model) {
+        if (model == null) {
+            return null;
+        }
 
-		// @formatter:off
+        // @formatter:off
         return RSServerDto.builder()
                 .id(model.getId())
                 //.createdDate(model.getCreatedDate())
                 .name(model.getName())
+                .isMaster(model.isMaster())
+                .hasServiceCamerastream(model.isHasServiceCamerastream())
+                .hasServiceSurveillance(model.isHasServiceSurveillance())
                 .urlCamerastream(model.getUrlCamerastream())
                 .usernameCamerastream(model.getUsernameCamerastream())
                 .passwordCamerastream(model.getPasswordCamerastream())
@@ -61,32 +71,32 @@ public class RSServerDtoService implements RSDtoService<RSServerDto, RSServerMod
                 .jsonData(model.getJsonData())
                 .build();
         // @formatter:on
-	}
+    }
 
-	@Override
-	public Set<RSServerDto> convert(Set<RSServerModel> models) {
-		if (models == null) {
-			return new HashSet<>();
-		}
+    @Override
+    public Set<RSServerDto> convert(Set<RSServerModel> models) {
+        if (models == null) {
+            return new HashSet<>();
+        }
 
-		// @formatter:off
+        // @formatter:off
         return models.stream()
                         .map(m -> convert(m))
                         .collect(Collectors.toSet());
         // @formatter:on
-	}
+    }
 
-	@Override
-	public Set<RSServerDto> convertAbridged(Set<RSServerModel> models) {
-		if (models == null) {
-			return new HashSet<>();
-		}
+    @Override
+    public Set<RSServerDto> convertAbridged(Set<RSServerModel> models) {
+        if (models == null) {
+            return new HashSet<>();
+        }
 
-		// @formatter:off
+        // @formatter:off
         return models.stream()
                         .map(m -> convertAbridged(m))
                         .collect(Collectors.toSet());
         // @formatter:on
-	}
+    }
 
 }

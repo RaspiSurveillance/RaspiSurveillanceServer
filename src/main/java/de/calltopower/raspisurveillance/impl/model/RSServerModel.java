@@ -50,92 +50,121 @@ import lombok.Setter;
 @Table(name = RSServerModel.TABLE_NAME)
 public class RSServerModel implements Serializable, RSModel {
 
-	private static final long serialVersionUID = 2057035435477510762L;
+    private static final long serialVersionUID = 2057035435477510762L;
 
-	/**
-	 * The table name
-	 */
-	public static final String TABLE_NAME = "servers";
+    /**
+     * The table name
+     */
+    public static final String TABLE_NAME = "servers";
 
-	/**
-	 * The table name for the attributes of camerastream
-	 */
-	public static final String TABLE_NAME_ATTRIBUTES_CAMERASTREAM = "attributes_camerastream";
+    /**
+     * The table name for the attributes of camerastream
+     */
+    public static final String TABLE_NAME_ATTRIBUTES_CAMERASTREAM = "attributes_camerastream";
 
-	/**
-	 * The table name for the attributes of surveillance
-	 */
-	public static final String TABLE_NAME_ATTRIBUTES_SURVEILLANCE = "attributes_surveillance";
+    /**
+     * The table name for the attributes of surveillance
+     */
+    public static final String TABLE_NAME_ATTRIBUTES_SURVEILLANCE = "attributes_surveillance";
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
-	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@Column(name = "NR_ID", columnDefinition = "BINARY(16)")
-	private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(name = "NR_ID", columnDefinition = "BINARY(16)")
+    private UUID id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "DATE_CREATED")
-	private Date createdDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DATE_CREATED")
+    private Date createdDate;
 
-	@NotBlank
-	@Size(max = 100)
-	@Column(name = "STR_NAME")
-	private String name;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_NAME")
+    private String name;
 
-	@NotBlank
-	@Size(max = 100)
-	@Column(name = "STR_URL")
-	private String url;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_URL")
+    private String url;
 
-	@NotBlank
-	@Size(max = 100)
-	@Column(name = "STR_USERNAME")
-	private String username;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_USERNAME")
+    private String username;
 
-	@NotBlank
-	@Size(max = 100)
-	@Column(name = "STR_PASSWORD")
-	private String password;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_PASSWORD")
+    private String password;
 
-	@NotBlank
-	@Size(max = 100)
-	@Column(name = "STR_URL_CAMERASTREAM")
-	private String urlCamerastream;
+    @Column(name = "IS_MASTER")
+    private boolean isMaster;
 
-	@NotBlank
-	@Size(max = 100)
-	@Column(name = "STR_USERNAME_CAMERASTREAM")
-	private String usernameCamerastream;
+    @Column(name = "HAS_SERVICE_CAMERASTREAM")
+    private boolean hasServiceCamerastream;
 
-	@NotBlank
-	@Size(max = 100)
-	@Column(name = "STR_PASSWORD_CAMERASTREAM")
-	private String passwordCamerastream;
+    @Column(name = "HAS_SERVICE_SURVEILLANCE")
+    private boolean hasServiceSurveillance;
 
-	@ElementCollection
-	@MapKeyColumn(name = "STR_KEY")
-	@Column(name = "STR_VALUE")
-	@CollectionTable(name = TABLE_NAME_ATTRIBUTES_CAMERASTREAM, joinColumns = { @JoinColumn(name = "NR_SERVER_ID") })
-	private Map<String, String> attributesCamerastream;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_URL_MASTER")
+    private String urlMaster;
 
-	@ElementCollection
-	@MapKeyColumn(name = "STR_KEY")
-	@Column(name = "STR_VALUE")
-	@CollectionTable(name = TABLE_NAME_ATTRIBUTES_SURVEILLANCE, joinColumns = { @JoinColumn(name = "NR_SERVER_ID") })
-	private Map<String, String> attributesSurveillance;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_ID_MASTER")
+    private String idMaster;
 
-	@NotNull
-	@Column(name = "STR_STATUS")
-	@Enumerated(EnumType.STRING)
-	private RSServerStatus status;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_USERNAME_MASTER")
+    private String usernameMaster;
 
-	@NotBlank
-	@Column(name = "JSON_DATA")
-	private String jsonData;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_PASSWORD_MASTER")
+    private String passwordMaster;
 
-	@Override
-	public String toString() {
-		// @formatter:off
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_URL_CAMERASTREAM")
+    private String urlCamerastream;
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_USERNAME_CAMERASTREAM")
+    private String usernameCamerastream;
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "STR_PASSWORD_CAMERASTREAM")
+    private String passwordCamerastream;
+
+    @ElementCollection
+    @MapKeyColumn(name = "STR_KEY")
+    @Column(name = "STR_VALUE")
+    @CollectionTable(name = TABLE_NAME_ATTRIBUTES_CAMERASTREAM, joinColumns = { @JoinColumn(name = "NR_SERVER_ID") })
+    private Map<String, String> attributesCamerastream;
+
+    @ElementCollection
+    @MapKeyColumn(name = "STR_KEY")
+    @Column(name = "STR_VALUE")
+    @CollectionTable(name = TABLE_NAME_ATTRIBUTES_SURVEILLANCE, joinColumns = { @JoinColumn(name = "NR_SERVER_ID") })
+    private Map<String, String> attributesSurveillance;
+
+    @NotNull
+    @Column(name = "STR_STATUS")
+    @Enumerated(EnumType.STRING)
+    private RSServerStatus status;
+
+    @NotBlank
+    @Column(name = "JSON_DATA")
+    private String jsonData;
+
+    @Override
+    public String toString() {
+        // @formatter:off
         return String.format(
                 "RSServerModel["
                     + "id='%s',"
@@ -143,6 +172,12 @@ public class RSServerModel implements Serializable, RSModel {
                     + "name='%s',"
                     + "url='%s',"
                     + "username='%s',"
+                    + "isMaster='%b',"
+                    + "hasServiceCamerastream='%b',"
+                    + "hasServiceSurveillance='%b',"
+                    + "urlMaster='%s',"
+                    + "idMaster='%s',"
+                    + "usernameMaster='%s',"
                     + "urlCamerastream='%s',"
                     + "usernameCamerastream='%s',"
                     + "status='%s'"
@@ -152,11 +187,17 @@ public class RSServerModel implements Serializable, RSModel {
                 name,
                 url,
                 username,
+                isMaster,
+                hasServiceCamerastream,
+                hasServiceSurveillance,
+                urlMaster,
+                idMaster, 
+                usernameMaster,
                 urlCamerastream,
                 usernameCamerastream,
                 status
                );
         // @formatter:on
-	}
+    }
 
 }

@@ -12,6 +12,8 @@ import lombok.Getter;
 public enum RSServerStatus implements RSEnum {
     // @formatter:off
     OFFLINE("offline"),
+    STARTING("starting"),
+    STOPPING("stopping"),
     ONLINE("online"),
     CAMERA_STREAM("camerastream"),
     SURVEILLANCE("surveillance");

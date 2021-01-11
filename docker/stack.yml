@@ -3,7 +3,7 @@ version: '3.1'
 services:
 
   db:
-    image: calltopower/raspisurveillance-db:1.0.0
+    image: calltopower/raspisurveillance-db:1.1.0
     restart: always
     ports:
       - 3306:3306
@@ -16,7 +16,7 @@ services:
       - ./data/db:/bitnami/mariadb
 
   flyway:
-    image: calltopower/raspisurveillance-flyway:1.0.0
+    image: calltopower/raspisurveillance-flyway:1.1.0
     command: migrate
     volumes:
       - ./flyway/config:/flyway/conf
@@ -24,7 +24,7 @@ services:
       - db
 
   raspisurveillance-server:
-    image: calltopower/raspisurveillance-server:1.0.0
+    image: calltopower/raspisurveillance-server:1.1.0
     restart: always
     ports:
       - 9090:9090
@@ -49,9 +49,6 @@ services:
       - RASPISURVEILLANCE_CACHE_FILE_STRING_MAX=10
       - RASPISURVEILLANCE_COMMAND_CAMERASTREAM_HAS_CAMERASTREAM=true
       - RASPISURVEILLANCE_COMMAND_SURVEILLANCE.HAS_SURVEILLANCE=true
-      - RASPISURVEILLANCE_SAPIS_URL=http://<url>:<port>
-      - RASPISURVEILLANCE_SAPIS_NAME=<name>
-      - RASPISURVEILLANCE_SAPIS_PASSWORD=<password>
       - SPRING_MAIL_HOST=<smtp.yourEmailProvider>
       - SPRING_MAIL_PORT=587
       - SPRING_MAIL_USERNAME=<username>

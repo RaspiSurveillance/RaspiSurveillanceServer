@@ -192,6 +192,22 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
+	@PutMapping(path = "/{id}/startup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public RSServerDto startupServer(@NotNull @PathVariable(name = "id") String id,
+			@AuthenticationPrincipal UserDetails userDetails) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Starting up server");
+		}
+
+		if (authService.isAdmin(authService.authenticate(userDetails))) {
+			return serverDtoService.convert(serverService.masterStartupServer(userDetails, id));
+		} else {
+			return serverDtoService.convertAbridged(serverService.masterStartupServer(userDetails, id));
+		}
+	}
+
+	@SuppressWarnings("javadoc")
 	@PutMapping(path = "/{id}/shutdown", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public RSServerDto shutdownServer(@NotNull @PathVariable(name = "id") String id,
