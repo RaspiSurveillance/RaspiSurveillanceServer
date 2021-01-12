@@ -17,6 +17,15 @@ A server for surveillance on a RaspiberryPi.
 
 - Users have a role
 
+### Servers
+
+- Master server(s)
+  - for startup/shutdown of wifi electric sockets
+  - project Raspi-SAPIS configured as master
+- Normal Server(s)
+  - host the services (camerastream/surveillance)
+  - project Raspi-SAPIS configured as normal server
+
 ## Installation
 
 This software is provided via docker. More information in the producation and development documentation.
