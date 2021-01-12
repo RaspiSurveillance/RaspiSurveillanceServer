@@ -133,7 +133,7 @@ public class RSServerController implements RSController {
 	public RSServerDto startCameraStream(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Requested updating server");
+			LOGGER.debug("Requested starting camera stream");
 		}
 
 		if (authService.isAdmin(authService.authenticate(userDetails))) {
@@ -149,7 +149,7 @@ public class RSServerController implements RSController {
 	public RSServerDto startSurveillance(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Requested updating server");
+			LOGGER.debug("Requested starting surveillance");
 		}
 
 		if (authService.isAdmin(authService.authenticate(userDetails))) {
@@ -165,7 +165,7 @@ public class RSServerController implements RSController {
 	public RSServerDto stopServicesOnServer(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Requested updating server");
+			LOGGER.debug("Requested stopping services");
 		}
 
 		if (authService.isAdmin(authService.authenticate(userDetails))) {
@@ -197,7 +197,7 @@ public class RSServerController implements RSController {
 	public RSServerDto startupServer(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Starting up server");
+			LOGGER.debug("Requested starting up server");
 		}
 
 		if (authService.isAdmin(authService.authenticate(userDetails))) {
@@ -213,7 +213,7 @@ public class RSServerController implements RSController {
 	public RSServerDto shutdownServer(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Shutting down server");
+			LOGGER.debug("Requested shutting down server");
 		}
 
 		if (authService.isAdmin(authService.authenticate(userDetails))) {
