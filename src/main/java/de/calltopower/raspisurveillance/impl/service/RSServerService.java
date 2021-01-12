@@ -585,13 +585,13 @@ public class RSServerService implements RSService {
                 if (server.getStatus() == RSServerStatus.OFFLINE || server.getStatus() == RSServerStatus.STARTING) {
                     server.setStatus(RSServerStatus.ONLINE);
                 }
-            } else if (server.getStatus() != RSServerStatus.STARTING) {
+            } else if (server.getStatus() != RSServerStatus.STARTING && server.getStatus() != RSServerStatus.STOPPING) {
                 server.setStatus(RSServerStatus.OFFLINE);
             }
         } catch (Exception e) {
             LOGGER.error(String.format("Could not refresh server status of server \"%s\" (\"%s\")", server.getName(),
                     server.getUrl()));
-            if (server.getStatus() != RSServerStatus.STARTING) {
+            if (server.getStatus() != RSServerStatus.STARTING && server.getStatus() != RSServerStatus.STOPPING) {
                 server.setStatus(RSServerStatus.OFFLINE);
             }
         }
