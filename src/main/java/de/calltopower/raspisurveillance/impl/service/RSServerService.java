@@ -505,7 +505,7 @@ public class RSServerService implements RSService {
         }
         boolean error = false;
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-            String url = String.format("%s/%s", server.getUrlMaster(), serverApiEndpoints.getShutdown());
+            String url = String.format("%s/%s", server.getUrlMaster(), serverApiEndpoints.getShutdownMaster());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(String.format("URL: %s", url));
             }
@@ -585,7 +585,7 @@ public class RSServerService implements RSService {
                 if (server.getStatus() == RSServerStatus.OFFLINE || server.getStatus() == RSServerStatus.STARTING) {
                     server.setStatus(RSServerStatus.ONLINE);
                 }
-            } else {
+            } else if (server.getStatus() != RSServerStatus.STARTING) {
                 server.setStatus(RSServerStatus.OFFLINE);
             }
         } catch (Exception e) {
