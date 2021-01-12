@@ -591,7 +591,9 @@ public class RSServerService implements RSService {
         } catch (Exception e) {
             LOGGER.error(String.format("Could not refresh server status of server \"%s\" (\"%s\")", server.getName(),
                     server.getUrl()));
-            server.setStatus(RSServerStatus.OFFLINE);
+            if (server.getStatus() != RSServerStatus.STARTING) {
+                server.setStatus(RSServerStatus.OFFLINE);
+            }
         }
 
         if (flush) {
