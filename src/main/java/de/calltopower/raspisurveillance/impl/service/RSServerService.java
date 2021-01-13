@@ -154,7 +154,7 @@ public class RSServerService implements RSService {
 
         RSServerModel server = getServer(userDetails, strId);
 
-        stopAllServices(server);
+        stopServices(server);
         server.setStatus(RSServerStatus.OFFLINE);
 
         if (StringUtils.isNotBlank(requestBody.getName())) {
@@ -226,7 +226,7 @@ public class RSServerService implements RSService {
 
         RSServerModel server = getServer(userDetails, strId);
 
-        stopAllServices(server);
+        stopServices(server);
 
         try {
             serverRepository.deleteById(UUID.fromString(strId));
@@ -293,7 +293,7 @@ public class RSServerService implements RSService {
 
         RSServerModel server = getServer(userDetails, strId);
 
-        stopAllServices(server);
+        stopServices(server);
 
         return serverRepository.saveAndFlush(server);
     }
@@ -399,7 +399,7 @@ public class RSServerService implements RSService {
             throw new RSFunctionalException("Master servers cannot be shut down");
         }
 
-        stopAllServices(server);
+        stopServices(server);
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Creating HTTP client");
@@ -601,10 +601,6 @@ public class RSServerService implements RSService {
         } else {
             return serverRepository.save(server);
         }
-    }
-
-    private void stopAllServices(RSServerModel server) {
-        stopServices(server);
     }
 
     private boolean startCamerastream(RSServerModel server) {
