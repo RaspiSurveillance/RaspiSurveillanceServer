@@ -15,57 +15,71 @@ import lombok.Getter;
 @ConfigurationProperties(prefix = RSSettingsProperties.PREFIX)
 public class RSSettingsProperties implements RSProperties {
 
-	/**
-	 * prefix in the application.properties
-	 */
-	public static final String PREFIX = "raspisurveillance";
+    /**
+     * prefix in the application.properties
+     */
+    public static final String PREFIX = "raspisurveillance";
 
-	public static final long DUE_TODOS_MINUTES_PLUS_DEFAULT = 300;
+    public static final long DUE_TODOS_MINUTES_PLUS_DEFAULT = 300;
 
-	public static final int MAX_STRING_FILE_CACHE_DEFAULT = 10;
+    public static final int MAX_STRING_FILE_CACHE_DEFAULT = 10;
 
-	@Value("${" + PREFIX + ".signup}")
-	private String signup;
+    public static final int REQUESTS_TIMEOUT_DEFAULT = 8000;
 
-	@Value("${" + PREFIX + ".url}")
-	private String url;
+    @Value("${" + PREFIX + ".signup}")
+    private String signup;
 
-	@Value("${" + PREFIX + ".url-password-reset}")
-	private String urlPasswordReset;
+    @Value("${" + PREFIX + ".url}")
+    private String url;
 
-	@Value("${" + PREFIX + ".url-password-reset-success}")
-	private String urlPasswordResetSuccess;
+    @Value("${" + PREFIX + ".url-password-reset}")
+    private String urlPasswordReset;
 
-	@Value("${" + PREFIX + ".url-user-verification}")
-	private String urlUserVerification;
+    @Value("${" + PREFIX + ".url-password-reset-success}")
+    private String urlPasswordResetSuccess;
 
-	@Value("${" + PREFIX + ".mail-from}")
-	private String mailFrom;
+    @Value("${" + PREFIX + ".url-user-verification}")
+    private String urlUserVerification;
 
-	@Value("${" + PREFIX + ".cache.file.string.max}")
-	private Integer maxStringFileCacheSize;
+    @Value("${" + PREFIX + ".mail-from}")
+    private String mailFrom;
 
-	@Override
-	public String getPrefix() {
-		return PREFIX;
-	}
+    @Value("${" + PREFIX + ".cache.file.string.max}")
+    private Integer maxStringFileCacheSize;
 
-	/**
-	 * Returns whether signing up for new users is allowed
-	 * 
-	 * @return boolean flag whether signing up for new users is allowed
-	 */
-	public boolean signupAllowed() {
-		return !signup.equals("DISABLED");
-	}
+    @Value("${" + PREFIX + ".requests.timeout}")
+    private Integer requestsTimeout;
 
-	/**
-	 * Returns the max string file cache size
-	 * 
-	 * @return max string file cache size
-	 */
-	public int getMaxStringFileCacheSize() {
-		return maxStringFileCacheSize == null ? MAX_STRING_FILE_CACHE_DEFAULT : maxStringFileCacheSize;
-	}
+    @Override
+    public String getPrefix() {
+        return PREFIX;
+    }
+
+    /**
+     * Returns whether signing up for new users is allowed
+     * 
+     * @return boolean flag whether signing up for new users is allowed
+     */
+    public boolean signupAllowed() {
+        return !signup.equals("DISABLED");
+    }
+
+    /**
+     * Returns the max string file cache size
+     * 
+     * @return max string file cache size
+     */
+    public int getMaxStringFileCacheSize() {
+        return maxStringFileCacheSize == null ? MAX_STRING_FILE_CACHE_DEFAULT : maxStringFileCacheSize;
+    }
+
+    /**
+     * Returns the requests timeout
+     * 
+     * @return the requests timeout
+     */
+    public int getRequestsTimeout() {
+        return requestsTimeout == null ? REQUESTS_TIMEOUT_DEFAULT : requestsTimeout;
+    }
 
 }

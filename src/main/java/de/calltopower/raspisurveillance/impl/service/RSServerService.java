@@ -10,12 +10,13 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import de.calltopower.raspisurveillance.impl.exception.RSFunctionalException;
 import de.calltopower.raspisurveillance.impl.exception.RSNotFoundException;
 import de.calltopower.raspisurveillance.impl.model.RSServerModel;
 import de.calltopower.raspisurveillance.impl.model.RSServerModel.RSServerModelBuilder;
+import de.calltopower.raspisurveillance.impl.properties.RSSettingsProperties;
 import de.calltopower.raspisurveillance.impl.requestbody.RSServerRequestBody;
 import de.calltopower.raspisurveillance.impl.utils.RSJsonUtils;
 import de.calltopower.raspisurveillance.impl.utils.RSServerAPIEndpoints;
@@ -45,21 +47,23 @@ public class RSServerService implements RSService {
     private RSServerRepository serverRepository;
     private RSJsonUtils jsonUtils;
     private RSServerAPIEndpoints serverApiEndpoints;
+    private RSSettingsProperties settingsProperties;
 
     /**
      * Initializes the service
      * 
-     * @param authService        The auth service
      * @param serverRepository   The server DB repository
      * @param jsonUtils          The Json utilities
      * @param serverApiEndpoints The Server API endpoints
+     * @param settingsProperties The settings properties
      */
     @Autowired
     public RSServerService(RSServerRepository serverRepository, RSJsonUtils jsonUtils,
-            RSServerAPIEndpoints serverApiEndpoints) {
+            RSServerAPIEndpoints serverApiEndpoints, RSSettingsProperties settingsProperties) {
         this.serverRepository = serverRepository;
         this.jsonUtils = jsonUtils;
         this.serverApiEndpoints = serverApiEndpoints;
+        this.settingsProperties = settingsProperties;
     }
 
     /**
@@ -343,7 +347,14 @@ public class RSServerService implements RSService {
             LOGGER.debug("Creating HTTP client");
         }
         boolean error = false;
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+        // @formatter:off
+        RequestConfig config = RequestConfig.custom()
+                                    .setConnectTimeout(settingsProperties.getRequestsTimeout())
+                                    .setConnectionRequestTimeout(settingsProperties.getRequestsTimeout())
+                                    .setSocketTimeout(settingsProperties.getRequestsTimeout())
+                                .build();
+        // @formatter:on
+        try (CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultRequestConfig(config).build()) {
             String url = String.format("%s/%s", server.getUrlMaster(), serverApiEndpoints.getStartup());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(String.format("URL: %s", url));
@@ -405,7 +416,14 @@ public class RSServerService implements RSService {
             LOGGER.debug("Creating HTTP client");
         }
         boolean error = false;
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+        // @formatter:off
+        RequestConfig config = RequestConfig.custom()
+                                    .setConnectTimeout(settingsProperties.getRequestsTimeout())
+                                    .setConnectionRequestTimeout(settingsProperties.getRequestsTimeout())
+                                    .setSocketTimeout(settingsProperties.getRequestsTimeout())
+                                .build();
+        // @formatter:on
+        try (CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultRequestConfig(config).build()) {
             String url = String.format("%s/%s", server.getUrl(), serverApiEndpoints.getShutdown());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(String.format("URL: %s", url));
@@ -469,7 +487,14 @@ public class RSServerService implements RSService {
             LOGGER.debug("Creating HTTP client");
         }
         boolean stillStopping = false;
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+        // @formatter:off
+        RequestConfig config = RequestConfig.custom()
+                                    .setConnectTimeout(settingsProperties.getRequestsTimeout())
+                                    .setConnectionRequestTimeout(settingsProperties.getRequestsTimeout())
+                                    .setSocketTimeout(settingsProperties.getRequestsTimeout())
+                                .build();
+        // @formatter:on
+        try (CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultRequestConfig(config).build()) {
             String url = String.format("%s/%s", server.getUrl(), serverApiEndpoints.getStatus());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(String.format("URL: %s", url));
@@ -504,7 +529,7 @@ public class RSServerService implements RSService {
             LOGGER.debug("Creating HTTP client");
         }
         boolean error = false;
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+        try (CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultRequestConfig(config).build()) {
             String url = String.format("%s/%s", server.getUrlMaster(), serverApiEndpoints.getShutdownMaster());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(String.format("URL: %s", url));
@@ -564,7 +589,14 @@ public class RSServerService implements RSService {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Creating HTTP client");
         }
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+        // @formatter:off
+        RequestConfig config = RequestConfig.custom()
+                                    .setConnectTimeout(settingsProperties.getRequestsTimeout())
+                                    .setConnectionRequestTimeout(settingsProperties.getRequestsTimeout())
+                                    .setSocketTimeout(settingsProperties.getRequestsTimeout())
+                                .build();
+        // @formatter:on
+        try (CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultRequestConfig(config).build()) {
             String url = String.format("%s/%s", server.getUrl(), serverApiEndpoints.getStatus());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(String.format("URL: %s", url));
@@ -627,7 +659,14 @@ public class RSServerService implements RSService {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Creating HTTP client");
         }
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+        // @formatter:off
+        RequestConfig config = RequestConfig.custom()
+                                    .setConnectTimeout(settingsProperties.getRequestsTimeout())
+                                    .setConnectionRequestTimeout(settingsProperties.getRequestsTimeout())
+                                    .setSocketTimeout(settingsProperties.getRequestsTimeout())
+                                .build();
+        // @formatter:on
+        try (CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultRequestConfig(config).build()) {
             String url = String.format("%s/%s", server.getUrl(), serverApiEndpoints.getStartCamerastream());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(String.format("URL: %s", url));
@@ -685,7 +724,14 @@ public class RSServerService implements RSService {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Creating HTTP client");
         }
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+        // @formatter:off
+        RequestConfig config = RequestConfig.custom()
+                                    .setConnectTimeout(settingsProperties.getRequestsTimeout())
+                                    .setConnectionRequestTimeout(settingsProperties.getRequestsTimeout())
+                                    .setSocketTimeout(settingsProperties.getRequestsTimeout())
+                                .build();
+        // @formatter:on
+        try (CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultRequestConfig(config).build()) {
             String url = String.format("%s/%s", server.getUrl(), serverApiEndpoints.getStartSurveillance());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(String.format("URL: %s", url));
@@ -748,7 +794,14 @@ public class RSServerService implements RSService {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Creating HTTP client");
         }
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+        // @formatter:off
+        RequestConfig config = RequestConfig.custom()
+                                    .setConnectTimeout(settingsProperties.getRequestsTimeout())
+                                    .setConnectionRequestTimeout(settingsProperties.getRequestsTimeout())
+                                    .setSocketTimeout(settingsProperties.getRequestsTimeout())
+                                .build();
+        // @formatter:on
+        try (CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultRequestConfig(config).build()) {
             String url = String.format("%s/%s", server.getUrl(), serverApiEndpoints.getStop());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(String.format("URL: %s", url));
