@@ -32,10 +32,10 @@ This software is provided via docker. More information in the producation and de
 
 Available docker images:
 
-- calltopower/raspisurveillance-flyway:1.1.1
-- calltopower/raspisurveillance-db:1.1.1
-- calltopower/raspisurveillance-server:1.1.1
-- calltopower/raspisurveillance-ng:1.1.1
+- calltopower/raspisurveillance-flyway:1.1.2
+- calltopower/raspisurveillance-db:1.1.2
+- calltopower/raspisurveillance-server:1.1.2
+- calltopower/raspisurveillance-ng:1.1.2
 
 The initially created user/password combination is: Admin/password1
 

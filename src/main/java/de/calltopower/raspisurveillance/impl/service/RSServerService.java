@@ -410,6 +410,12 @@ public class RSServerService implements RSService {
             throw new RSFunctionalException("Master servers cannot be shut down");
         }
 
+        if (server.getStatus() == RSServerStatus.OFFLINE) {
+            throw new RSFunctionalException("Server is offline");
+        } else if (server.getStatus() == RSServerStatus.STOPPING) {
+            throw new RSFunctionalException("Server is already stopping");
+        }
+
         stopServices(server);
 
         if (LOGGER.isDebugEnabled()) {

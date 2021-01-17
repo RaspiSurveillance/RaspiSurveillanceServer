@@ -1,5 +1,9 @@
 # RaspiSurveillanceServer - Changelog
 
+## 1.1.2
+
+- Improved status checks
+
 ## v1.1.1
 
 - Added request timeouts
