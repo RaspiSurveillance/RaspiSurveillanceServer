@@ -30,11 +30,9 @@ public class RSServerRequestBody implements RSRequestBody {
     @Size(min = 2, max = 100)
     private String url;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String username;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String password;
 
@@ -47,31 +45,24 @@ public class RSServerRequestBody implements RSRequestBody {
     @NotBlank
     private Boolean hasServiceSurveillance;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String urlMaster;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String idMaster;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String usernameMaster;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String passwordMaster;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String urlCamerastream;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String usernameCamerastream;
 
-    @NotBlank
     @Size(min = 2, max = 100)
     private String passwordCamerastream;
 

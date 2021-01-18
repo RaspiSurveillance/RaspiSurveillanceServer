@@ -127,7 +127,7 @@ public class RSServerService implements RSService {
 			.urlCamerastream(requestBody.getUrlCamerastream())
 			.usernameCamerastream(requestBody.getUsernameCamerastream())
 			.passwordCamerastream(requestBody.getPasswordCamerastream())
-			.status(RSServerStatus.OFFLINE)
+			.status(RSServerStatus.INITIALIZING)
 			.jsonData(jsonData);
 		// @formatter:on
         if (requestBody.getAttributesCamerastream() != null) {
@@ -139,7 +139,7 @@ public class RSServerService implements RSService {
 
         RSServerModel model = serverBuilder.build();
 
-        return refreshServerStatus(model, true);
+        return serverRepository.saveAndFlush(model);
     }
 
     /**
@@ -159,7 +159,7 @@ public class RSServerService implements RSService {
         RSServerModel server = getServer(userDetails, strId);
 
         stopServices(server);
-        server.setStatus(RSServerStatus.OFFLINE);
+        server.setStatus(RSServerStatus.INITIALIZING);
 
         if (StringUtils.isNotBlank(requestBody.getName())) {
             server.setName(requestBody.getName());
@@ -182,7 +182,7 @@ public class RSServerService implements RSService {
         if (requestBody.getHasServiceSurveillance() != null) {
             server.setHasServiceSurveillance(requestBody.getHasServiceSurveillance());
         }
-        if (StringUtils.isNotBlank(requestBody.getUrlMaster())) {
+        if (requestBody.getUrlMaster() != null) {
             server.setUrlMaster(requestBody.getUrlMaster());
         }
         if (requestBody.getIdMaster() != null) {
@@ -213,7 +213,7 @@ public class RSServerService implements RSService {
             server.setJsonData(jsonUtils.getNonEmptyJson(requestBody.getJsonData()));
         }
 
-        return refreshServerStatus(server, true);
+        return serverRepository.saveAndFlush(server);
     }
 
     /**
@@ -335,12 +335,23 @@ public class RSServerService implements RSService {
 
         RSServerModel server = getServer(userDetails, strId);
 
+        // Check status
         if (server.getStatus() != RSServerStatus.OFFLINE) {
             throw new RSFunctionalException("Server is not offline");
+        } else if (server.getStatus() == RSServerStatus.INITIALIZING) {
+            throw new RSFunctionalException("Server is still initializing");
         }
 
+        // Check master server
         if (server.isMaster()) {
             throw new RSFunctionalException("Master servers cannot be started");
+        }
+
+        // Check mandatory (for this call) attributes
+        if (StringUtils.isBlank(server.getUrlMaster())) {
+            throw new RSFunctionalException("Master URL is blank");
+        } else if (StringUtils.isBlank(server.getIdMaster())) {
+            throw new RSFunctionalException("Server master ID is blank");
         }
 
         if (LOGGER.isDebugEnabled()) {
@@ -406,14 +417,25 @@ public class RSServerService implements RSService {
 
         RSServerModel server = getServer(userDetails, strId);
 
-        if (server.isMaster()) {
-            throw new RSFunctionalException("Master servers cannot be shut down");
-        }
-
+        // Check status
         if (server.getStatus() == RSServerStatus.OFFLINE) {
             throw new RSFunctionalException("Server is offline");
         } else if (server.getStatus() == RSServerStatus.STOPPING) {
             throw new RSFunctionalException("Server is already stopping");
+        } else if (server.getStatus() == RSServerStatus.INITIALIZING) {
+            throw new RSFunctionalException("Server is still initializing");
+        }
+
+        // Check master server
+        if (server.isMaster()) {
+            throw new RSFunctionalException("Master servers cannot be shut down");
+        }
+
+        // Check mandatory (for this call) attributes
+        if (StringUtils.isBlank(server.getUrl())) {
+            throw new RSFunctionalException("URL is blank");
+        } else if (StringUtils.isBlank(server.getIdMaster())) {
+            throw new RSFunctionalException("Server master ID is blank");
         }
 
         stopServices(server);
@@ -476,16 +498,30 @@ public class RSServerService implements RSService {
             LOGGER.debug(String.format("Master shutting down server with ID \"%s\"", server.getId()));
         }
 
-        if (server.isMaster()) {
-            LOGGER.warn("Master servers cannot be shut down");
-            return server;
-        }
-
+        // Check status
         if (server.getStatus() != RSServerStatus.STOPPING) {
             if (LOGGER.isWarnEnabled()) {
                 LOGGER.warn(String.format("Server \"%s\" is not in mode STOPPING, stopping anyways", server.getName()));
             }
             // return server;
+        }
+
+        // Check master server
+        if (server.isMaster()) {
+            LOGGER.warn("Master servers cannot be shut down");
+            return server;
+        }
+
+        // Check mandatory (for this call) attributes
+        if (StringUtils.isBlank(server.getUrl())) {
+            LOGGER.warn("URL is blank");
+            return server;
+        } else if (StringUtils.isBlank(server.getUrlMaster())) {
+            LOGGER.warn("Master URL is blank");
+            return server;
+        } else if (StringUtils.isBlank(server.getIdMaster())) {
+            LOGGER.warn("Server master ID is blank");
+            return server;
         }
 
         // 1. Check whether server is still stopping
@@ -592,6 +628,12 @@ public class RSServerService implements RSService {
             LOGGER.info(String.format("Refreshing local server \"%s\"", server.getName()));
         }
 
+        // Check mandatory (for this call) attributes
+        if (StringUtils.isBlank(server.getUrl())) {
+            LOGGER.warn("URL is blank");
+            return server;
+        }
+
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Creating HTTP client");
         }
@@ -620,7 +662,8 @@ public class RSServerService implements RSService {
 
             Boolean responseBody = httpclient.execute(httpGet, responseHandler);
             if (responseBody.booleanValue()) {
-                if (server.getStatus() == RSServerStatus.OFFLINE || server.getStatus() == RSServerStatus.STARTING) {
+                if (server.getStatus() == RSServerStatus.OFFLINE || server.getStatus() == RSServerStatus.STARTING
+                        || server.getStatus() == RSServerStatus.INITIALIZING) {
                     server.setStatus(RSServerStatus.ONLINE);
                 }
             } else if (server.getStatus() != RSServerStatus.STARTING && server.getStatus() != RSServerStatus.STOPPING) {
@@ -642,9 +685,12 @@ public class RSServerService implements RSService {
     }
 
     private boolean startCamerastream(RSServerModel server) {
+        // Check status
         switch (server.getStatus()) {
         case OFFLINE:
             throw new RSFunctionalException("Server is offline");
+        case INITIALIZING:
+            throw new RSFunctionalException("Server is currently initializing");
         case STARTING:
             throw new RSFunctionalException("Server is currently starting");
         case STOPPING:
@@ -658,8 +704,14 @@ public class RSServerService implements RSService {
             break;
         }
 
+        // Check services
         if (!server.isHasServiceCamerastream()) {
             throw new RSFunctionalException("Server does not have service camerastream");
+        }
+
+        // Check mandatory (for this call) attributes
+        if (StringUtils.isBlank(server.getUrl())) {
+            throw new RSFunctionalException("URL is blank");
         }
 
         if (LOGGER.isDebugEnabled()) {
@@ -698,18 +750,22 @@ public class RSServerService implements RSService {
             Boolean responseBody = httpclient.execute(httpPut, responseHandler);
             if (responseBody.booleanValue()) {
                 server.setStatus(RSServerStatus.CAMERA_STREAM);
+                return true;
             }
 
-            return server.getStatus() == RSServerStatus.CAMERA_STREAM;
+            return false;
         } catch (Exception e) {
             throw new RSFunctionalException("Could not start camerastream");
         }
     }
 
     private boolean startSurveillance(RSServerModel server) {
+        // Check status
         switch (server.getStatus()) {
         case OFFLINE:
             throw new RSFunctionalException("Server is offline");
+        case INITIALIZING:
+            throw new RSFunctionalException("Server is currently initializing");
         case STARTING:
             throw new RSFunctionalException("Server is currently starting");
         case STOPPING:
@@ -723,8 +779,14 @@ public class RSServerService implements RSService {
             break;
         }
 
+        // Check services
         if (!server.isHasServiceSurveillance()) {
             throw new RSFunctionalException("Server does not have service surveillance");
+        }
+
+        // Check mandatory (for this call) attributes
+        if (StringUtils.isBlank(server.getUrl())) {
+            throw new RSFunctionalException("URL is blank");
         }
 
         if (LOGGER.isDebugEnabled()) {
@@ -744,6 +806,10 @@ public class RSServerService implements RSService {
             }
             HttpPut httpPut = new HttpPut(url);
 
+            Map<String, Object> options = new HashMap<>();
+            options.put("options", server.getAttributesSurveillance());
+            httpPut.setEntity(new StringEntity(jsonUtils.mapToJson(options)));
+
             UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(server.getUsername(),
                     server.getPassword());
             httpPut.addHeader(new BasicScheme().authenticate(credentials, httpPut, null));
@@ -757,19 +823,26 @@ public class RSServerService implements RSService {
             Boolean responseBody = httpclient.execute(httpPut, responseHandler);
             if (responseBody.booleanValue()) {
                 server.setStatus(RSServerStatus.SURVEILLANCE);
+                return true;
             }
 
-            return server.getStatus() == RSServerStatus.SURVEILLANCE;
+            return false;
         } catch (Exception e) {
             throw new RSFunctionalException("Could not start surveillance");
         }
     }
 
     private boolean stopServices(RSServerModel server) {
+        // Check status
         switch (server.getStatus()) {
         case OFFLINE:
             if (LOGGER.isWarnEnabled()) {
                 LOGGER.warn(String.format("Server \"%s\" is offline", server.getName()));
+            }
+            return false;
+        case INITIALIZING:
+            if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn(String.format("Server \"%s\" is still initializing", server.getName()));
             }
             return false;
         case STARTING:
@@ -789,12 +862,18 @@ public class RSServerService implements RSService {
             break;
         }
 
+        // Check services
         if (!server.isHasServiceCamerastream() && !server.isHasServiceSurveillance()) {
             if (LOGGER.isInfoEnabled()) {
-                LOGGER.info(String.format("Server \"%s\" does not have any active services", server.getName()));
+                LOGGER.info(String.format("Server \"%s\" does not have any activated services", server.getName()));
             }
 
             return true;
+        }
+
+        // Check mandatory (for this call) attributes
+        if (StringUtils.isBlank(server.getUrl())) {
+            throw new RSFunctionalException("URL is blank");
         }
 
         if (LOGGER.isDebugEnabled()) {
@@ -827,9 +906,10 @@ public class RSServerService implements RSService {
             Boolean responseBody = httpclient.execute(httpPut, responseHandler);
             if (responseBody.booleanValue()) {
                 server.setStatus(RSServerStatus.ONLINE);
+                return true;
             }
 
-            return server.getStatus() == RSServerStatus.ONLINE;
+            return false;
         } catch (Exception e) {
             LOGGER.error(
                     String.format("Could not stop services for server \"%s\": %s", server.getName(), e.getMessage()));

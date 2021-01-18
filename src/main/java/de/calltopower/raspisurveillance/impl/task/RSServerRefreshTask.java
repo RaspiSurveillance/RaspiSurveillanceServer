@@ -71,14 +71,15 @@ public class RSServerRefreshTask implements RSSchedulingTask {
         List<RSServerModel> servers = serverRepository.findAll();
         // @formatter:off
         servers.stream()
-            .filter(s -> s.getStatus() == RSServerStatus.STARTING)
+            .filter(s -> s.getStatus() == RSServerStatus.STARTING || s.getStatus() == RSServerStatus.INITIALIZING)
             .forEach(s -> {
                 if (LOGGER.isInfoEnabled()) {
-                    LOGGER.info(String.format("Checking starting server with id \"%s\"", s.getId()));
+                    LOGGER.info(String.format("Checking starting/initializing server with id \"%s\"", s.getId()));
                 }
                 serverService.refreshServerStatus(s, false);
             });
         // @formatter:on
+
         // @formatter:off
         servers.stream()
             .filter(s -> s.getStatus() == RSServerStatus.STOPPING)

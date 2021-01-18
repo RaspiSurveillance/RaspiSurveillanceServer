@@ -1,5 +1,13 @@
 # RaspiSurveillanceServer - Changelog
 
+## 1.2.0
+
+- New status: Initializing (directly after creating it)
+- Faster create and update processes
+- Less mandatory initial server fields
+- Add/Edit server optimized
+- Added surveillance attributes to the PUT request
+
 ## 1.1.2
 
 - Improved status checks

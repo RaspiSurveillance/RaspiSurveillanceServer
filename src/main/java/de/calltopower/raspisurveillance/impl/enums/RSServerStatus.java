@@ -12,6 +12,7 @@ import lombok.Getter;
 public enum RSServerStatus implements RSEnum {
     // @formatter:off
     OFFLINE("offline"),
+    INITIALIZING("initializing"),
     STARTING("starting"),
     STOPPING("stopping"),
     ONLINE("online"),

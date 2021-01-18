@@ -87,12 +87,10 @@ public class RSServerModel implements Serializable, RSModel {
     @Column(name = "STR_URL")
     private String url;
 
-    @NotBlank
     @Size(max = 100)
     @Column(name = "STR_USERNAME")
     private String username;
 
-    @NotBlank
     @Size(max = 100)
     @Column(name = "STR_PASSWORD")
     private String password;
@@ -106,37 +104,30 @@ public class RSServerModel implements Serializable, RSModel {
     @Column(name = "HAS_SERVICE_SURVEILLANCE")
     private boolean hasServiceSurveillance;
 
-    @NotBlank
     @Size(max = 100)
     @Column(name = "STR_URL_MASTER")
     private String urlMaster;
 
-    @NotBlank
     @Size(max = 100)
     @Column(name = "STR_ID_MASTER")
     private String idMaster;
 
-    @NotBlank
     @Size(max = 100)
     @Column(name = "STR_USERNAME_MASTER")
     private String usernameMaster;
 
-    @NotBlank
     @Size(max = 100)
     @Column(name = "STR_PASSWORD_MASTER")
     private String passwordMaster;
 
-    @NotBlank
     @Size(max = 100)
     @Column(name = "STR_URL_CAMERASTREAM")
     private String urlCamerastream;
 
-    @NotBlank
     @Size(max = 100)
     @Column(name = "STR_USERNAME_CAMERASTREAM")
     private String usernameCamerastream;
 
-    @NotBlank
     @Size(max = 100)
     @Column(name = "STR_PASSWORD_CAMERASTREAM")
     private String passwordCamerastream;
