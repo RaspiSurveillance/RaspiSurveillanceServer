@@ -2,6 +2,7 @@ package de.calltopower.raspisurveillance.impl.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -131,9 +132,11 @@ public class RSServerService implements RSService {
 			.jsonData(jsonData);
 		// @formatter:on
         if (requestBody.getAttributesCamerastream() != null) {
+            assertAttributeKeyValueLengths(requestBody.getAttributesCamerastream(), 100);
             serverBuilder.attributesCamerastream(requestBody.getAttributesCamerastream());
         }
         if (requestBody.getAttributesSurveillance() != null) {
+            assertAttributeKeyValueLengths(requestBody.getAttributesSurveillance(), 100);
             serverBuilder.attributesSurveillance(requestBody.getAttributesSurveillance());
         }
 
@@ -204,9 +207,11 @@ public class RSServerService implements RSService {
             server.setPasswordCamerastream(requestBody.getPasswordCamerastream());
         }
         if (requestBody.getAttributesCamerastream() != null) {
+            assertAttributeKeyValueLengths(requestBody.getAttributesCamerastream(), 100);
             server.setAttributesCamerastream(requestBody.getAttributesCamerastream());
         }
         if (requestBody.getAttributesSurveillance() != null) {
+            assertAttributeKeyValueLengths(requestBody.getAttributesSurveillance(), 100);
             server.setAttributesSurveillance(requestBody.getAttributesSurveillance());
         }
         if (requestBody.getJsonData() != null) {
@@ -914,6 +919,16 @@ public class RSServerService implements RSService {
             LOGGER.error(
                     String.format("Could not stop services for server \"%s\": %s", server.getName(), e.getMessage()));
             return false;
+        }
+    }
+
+    private void assertAttributeKeyValueLengths(Map<String, String> map, int maxLength) {
+        for (Entry<String, String> entry : map.entrySet()) {
+            if (entry.getKey().length() > maxLength || entry.getValue().length() > maxLength) {
+                throw new RSFunctionalException(String.format(
+                        "Attribute entries (key and value) can only be 100 characters max (entry %s / %s)",
+                        entry.getKey(), entry.getValue()));
+            }
         }
     }
 
