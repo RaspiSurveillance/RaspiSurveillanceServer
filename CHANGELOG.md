@@ -1,5 +1,11 @@
 # RaspiSurveillanceServer - Changelog
 
+## v1.2.1
+
+- Upgrade to Java 11
+- Update dependencies
+- Upgrade to Angular 13
+
 ## 1.2.0
 
 - New status: Initializing (directly after creating it)

@@ -8,7 +8,13 @@ Based on Java, Spring boot, Spring security (token-based authentication), docker
 
 #### Installation
 
-- Instructions: https://hub.docker.com/editions/community/docker-ce-desktop-windows/
+- Windows instructions
+	- https://hub.docker.com/editions/community/docker-ce-desktop-windows/
+- Linux instructions
+	- https://docs.docker.com/engine/install/ubuntu/
+	- https://docs.docker.com/compose/install/
+	- sudo chmod 666 /var/run/docker.sock
+- sudo chown -R 1001:1001 ./docker/db/data
 
 ## Build for production
 

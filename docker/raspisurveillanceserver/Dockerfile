@@ -1,4 +1,4 @@
-FROM gradle:6.6.1-jdk8 AS build
+FROM gradle:6.9.2-jdk11 AS build
 
 COPY build.gradle /build/
 COPY src /build/src/
@@ -7,7 +7,7 @@ WORKDIR /build/
 
 RUN gradle build --no-daemon
 
-FROM adoptopenjdk/openjdk8:latest
+FROM adoptopenjdk/openjdk11:latest
 
 WORKDIR /app
 
