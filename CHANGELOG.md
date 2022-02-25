@@ -1,5 +1,9 @@
 # RaspiSurveillanceServer - Changelog
 
+## v1.2.2
+
+- Fixed styling issues
+
 ## v1.2.1
 
 - Upgrade to Java 11
