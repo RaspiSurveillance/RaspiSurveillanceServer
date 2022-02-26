@@ -109,7 +109,7 @@
     "servers.details.component.url": "URL",
     "servers.details.component.actions": "Aktionen",
     "servers.details.component.actions.start_camerastream": "Camerastream starten",
-    "servers.details.component.actions.start_suvrveillance": "Überwachung starten",
+    "servers.details.component.actions.start_surveillance": "Überwachung starten",
     "servers.details.component.actions.stop": "Stoppen",
     "servers.details.component.urlCamerastream": "URL Camerastream",
     "servers.details.component.attributesCamerastream": "Attribute Camerastream",

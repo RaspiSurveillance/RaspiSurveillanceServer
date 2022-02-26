@@ -1,5 +1,14 @@
 # RaspiSurveillanceServer - Changelog
 
+## v1.3.0
+
+- Version Upgrades (done)
+	- Database
+	- Database Migrations
+	- Gradle
+	- Java
+	- Angular
+
 ## v1.2.2
 
 - Fixed styling issues
