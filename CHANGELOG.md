@@ -1,5 +1,9 @@
 # RaspiSurveillanceServer - Changelog
 
+## v1.3.1
+
+- Fixed styling issues
+
 ## v1.3.0
 
 - Version Upgrades (done)
