@@ -36,7 +36,7 @@ public class RSConnectionController implements RSController {
     }
 
     @SuppressWarnings("javadoc")
-    @GetMapping(path = "/available", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(path = "/available", produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean checkAvailability(@AuthenticationPrincipal UserDetails userDetails) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Requested check availability");
@@ -46,7 +46,7 @@ public class RSConnectionController implements RSController {
     }
 
     @SuppressWarnings("javadoc")
-    @GetMapping(path = "/authorized", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(path = "/authorized", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public boolean checkAuthorized(@AuthenticationPrincipal UserDetails userDetails) {
         if (LOGGER.isDebugEnabled()) {

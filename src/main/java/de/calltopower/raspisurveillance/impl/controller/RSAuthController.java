@@ -56,7 +56,7 @@ public class RSAuthController implements RSController {
     }
 
     @SuppressWarnings("javadoc")
-    @PostMapping(path = "/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public RSUserDto registerUser(@Valid @RequestBody RSSignupRequestBody requestBody,
             @AuthenticationPrincipal UserDetails userDetails) {
         if (LOGGER.isDebugEnabled()) {
@@ -67,7 +67,7 @@ public class RSAuthController implements RSController {
     }
 
     @SuppressWarnings("javadoc")
-    @PostMapping(path = "/signin", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/signin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public RSTokenDto authenticateUser(@Valid @RequestBody RSSigninRequestBody requestBody) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Requested signing in user");

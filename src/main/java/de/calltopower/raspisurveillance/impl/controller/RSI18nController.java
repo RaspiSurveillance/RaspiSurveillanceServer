@@ -52,7 +52,7 @@ public class RSI18nController implements RSController {
     }
 
     @SuppressWarnings("javadoc")
-    @GetMapping(path = "/languages", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(path = "/languages", produces = MediaType.APPLICATION_JSON_VALUE)
     public RSLanguagesDto getLanguages() {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Requested languages");
@@ -62,7 +62,7 @@ public class RSI18nController implements RSController {
     }
 
     @SuppressWarnings("javadoc")
-    @GetMapping(path = "/languages/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(path = "/languages/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RSTranslationsDto getTranslations(@NotNull @PathVariable(name = "id") String id) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Requested language");

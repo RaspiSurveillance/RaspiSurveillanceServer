@@ -38,7 +38,6 @@ public class RSErrorController implements RSController, ErrorController {
         throw new RSNotFoundException("Error");
     }
 
-    @Override
     public String getErrorPath() {
         return PATH_ERROR;
     }

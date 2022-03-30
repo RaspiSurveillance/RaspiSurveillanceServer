@@ -4,6 +4,11 @@ Based on Java, Spring boot, Spring security (token-based authentication), docker
 
 ## Requirements
 
+### Software
+
+- Java SDK 17
+- Gradle 4.7.1
+
 ### Docker
 
 #### Installation

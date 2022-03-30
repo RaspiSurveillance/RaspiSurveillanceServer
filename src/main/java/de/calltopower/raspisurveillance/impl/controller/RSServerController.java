@@ -61,7 +61,7 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
-	@GetMapping(path = "", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public Set<RSServerDto> getAll(@AuthenticationPrincipal UserDetails userDetails) {
 		if (LOGGER.isDebugEnabled()) {
@@ -76,7 +76,7 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
-	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public RSServerDto getServer(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
@@ -92,7 +92,7 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
-	@PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public RSServerDto createServer(@NotNull @RequestBody RSServerRequestBody requestBody,
 			@AuthenticationPrincipal UserDetails userDetails) {
@@ -104,7 +104,7 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
-	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ADMIN')")
 	public RSServerDto updateServer(@NotNull @PathVariable(name = "id") String id,
 			@NotNull @RequestBody RSServerRequestBody requestBody, @AuthenticationPrincipal UserDetails userDetails) {
@@ -128,7 +128,7 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
-	@PutMapping(path = "/{id}/start/camerastream", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(path = "/{id}/start/camerastream", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public RSServerDto startCameraStream(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
@@ -144,7 +144,7 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
-	@PutMapping(path = "/{id}/start/surveillance", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(path = "/{id}/start/surveillance", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public RSServerDto startSurveillance(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
@@ -160,7 +160,7 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
-	@PutMapping(path = "/{id}/stop", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(path = "/{id}/stop", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public RSServerDto stopServicesOnServer(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
@@ -176,7 +176,7 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
-	@PutMapping(path = "/{id}/refresh", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(path = "/{id}/refresh", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public RSServerDto refreshServer(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
@@ -192,7 +192,7 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
-	@PutMapping(path = "/{id}/startup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(path = "/{id}/startup", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public RSServerDto startupServer(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {
@@ -208,7 +208,7 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
-	@PutMapping(path = "/{id}/shutdown", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(path = "/{id}/shutdown", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public RSServerDto shutdownServer(@NotNull @PathVariable(name = "id") String id,
 			@AuthenticationPrincipal UserDetails userDetails) {

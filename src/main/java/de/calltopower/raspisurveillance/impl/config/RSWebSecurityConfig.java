@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -36,36 +35,34 @@ import de.calltopower.raspisurveillance.impl.service.RSUserDetailsService;
 // @formatter:on
 public class RSWebSecurityConfig extends WebSecurityConfigurerAdapter implements RSConfig {
 
-    @Autowired
-    private RSUserDetailsService userDetailsService;
+	private PasswordEncoder passwordEncoder;
+	private RSAuthTokenFilter authTokenFilter;
+	private RSUserDetailsService userDetailsService;
+	private RSAuthEntryPointJwt unauthorizedHandler;
 
-    @Autowired
-    private RSAuthEntryPointJwt unauthorizedHandler;
+	@Autowired
+	public RSWebSecurityConfig(PasswordEncoder passwordEncoder, RSAuthTokenFilter authTokenFilter,
+			RSUserDetailsService userDetailsService, RSAuthEntryPointJwt unauthorizedHandler) {
+		this.passwordEncoder = passwordEncoder;
+		this.authTokenFilter = authTokenFilter;
+		this.userDetailsService = userDetailsService;
+		this.unauthorizedHandler = unauthorizedHandler;
+	}
 
-    @Bean
-    public RSAuthTokenFilter authenticationJwtTokenFilter() {
-        return new RSAuthTokenFilter();
-    }
+	@Override
+	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+	}
 
-    @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        // @formatter:off
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		// @formatter:off
         httpSecurity
             .cors().and().csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
@@ -80,12 +77,7 @@ public class RSWebSecurityConfig extends WebSecurityConfigurerAdapter implements
                 .anyRequest().authenticated();
         // @formatter:on
 
-        httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
+		httpSecurity.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+	}
 
 }

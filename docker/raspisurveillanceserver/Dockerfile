@@ -1,4 +1,4 @@
-FROM gradle:6.9.2-jdk11 AS build
+FROM gradle:7.4.1-jdk17 AS build
 
 COPY build.gradle /build/
 COPY src /build/src/
@@ -7,7 +7,7 @@ WORKDIR /build/
 
 RUN gradle build --no-daemon
 
-FROM adoptopenjdk/openjdk11:latest
+FROM openjdk:17.0.2-jdk-oraclelinux8
 
 WORKDIR /app
 

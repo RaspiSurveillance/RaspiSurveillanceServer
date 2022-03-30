@@ -1,5 +1,13 @@
 # RaspiSurveillanceServer - Changelog
 
+## v1.4.0
+
+- Java 17
+- Gradle 7.4.1
+- Spring 2.5.11
+- Flyway 8.5.5
+- More dependency updates
+
 ## v1.3.1
 
 - Fixed styling issues
