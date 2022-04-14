@@ -1,5 +1,10 @@
 # RaspiSurveillanceServer - Changelog
 
+## v1.4.1
+
+- Added missing i18n
+- Replaced the notification service with a library
+
 ## v1.4.0
 
 - Java 17
