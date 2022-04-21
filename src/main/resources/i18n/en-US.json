@@ -92,6 +92,7 @@
     "servers.addedit.component.subheader.service_camerastream": "Service Camerastream",
     "servers.addedit.component.subheader.service_surveillance": "Service Surveillance",
     "servers.details.component.error.server_load": "Server could not be loaded.",
+    "servers.details.component.dangerArea": "Danger Area",
     "servers.details.component.modal.delete.header": "Confirm server deletion",
     "servers.details.component.modal.delete.text": "Are you sure that you want to delete the server \"%sName%\"?",
     "servers.details.component.modal.delete.text2": "This server will be permanently deleted.",

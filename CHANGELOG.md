@@ -1,5 +1,9 @@
 # RaspiSurveillanceServer - Changelog
 
+## v1.4.2
+
+- Visual and handling optimizations
+
 ## v1.4.1
 
 - Added missing i18n

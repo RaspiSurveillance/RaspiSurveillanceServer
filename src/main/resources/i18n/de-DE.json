@@ -92,6 +92,7 @@
     "servers.addedit.component.subheader.service_camerastream": "Service Camerastream",
     "servers.addedit.component.subheader.service_surveillance": "Service Überwachung",
     "servers.details.component.error.server_load": "Server konnte nicht geladen werden.",
+    "servers.details.component.dangerArea": "Gefahren-Zone",
     "servers.details.component.modal.delete.header": "Bestätigung der Löschung des Servers",
     "servers.details.component.modal.delete.text": "Bist du sicher, dass du den Server \"%sName%\" löschen möchtest?",
     "servers.details.component.modal.delete.text2": "Dieser Server wird permanent gelöscht.",
