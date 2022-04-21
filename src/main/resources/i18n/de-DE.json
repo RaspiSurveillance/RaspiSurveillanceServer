@@ -206,6 +206,7 @@
     "users.addedit.component.error.user_add": "Nutzer konnte nicht hinzugefügt werden",
     "users.addedit.component.success.user_update": "Nutzer erfolgreich aktualisiert.",
     "users.addedit.component.error.user_update": "Nutzer konnte nicht aktualisiert werden. Evtl. ist die E-Mail-Adresse bereits in Gebrauch?",
+    "users.details.component.dangerArea": "Gefahren-Zone",
     "users.details.component.username": "Nutzername",
     "users.details.component.email": "E-Mail-Adresse",
     "users.details.component.verification": "Status",
