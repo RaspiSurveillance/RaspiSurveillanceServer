@@ -1,5 +1,10 @@
 # RaspiSurveillanceServer - Changelog
 
+## v1.4.3
+
+- Reset server status
+- Hard shutdown
+
 ## v1.4.2
 
 - Visual and handling optimizations

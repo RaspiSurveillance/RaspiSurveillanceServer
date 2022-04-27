@@ -192,6 +192,22 @@ public class RSServerController implements RSController {
 	}
 
 	@SuppressWarnings("javadoc")
+	@PutMapping(path = "/{id}/reset", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public RSServerDto resetServer(@NotNull @PathVariable(name = "id") String id,
+			@AuthenticationPrincipal UserDetails userDetails) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Requested resetting server");
+		}
+
+		if (authService.isAdmin(authService.authenticate(userDetails))) {
+			return serverDtoService.convert(serverService.resetServer(userDetails, id));
+		} else {
+			return serverDtoService.convertAbridged(serverService.resetServer(userDetails, id));
+		}
+	}
+
+	@SuppressWarnings("javadoc")
 	@PutMapping(path = "/{id}/startup", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public RSServerDto startupServer(@NotNull @PathVariable(name = "id") String id,
@@ -220,6 +236,22 @@ public class RSServerController implements RSController {
 			return serverDtoService.convert(serverService.shutdownServer(userDetails, id));
 		} else {
 			return serverDtoService.convertAbridged(serverService.shutdownServer(userDetails, id));
+		}
+	}
+
+	@SuppressWarnings("javadoc")
+	@PutMapping(path = "/{id}/shutdown/hard", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
+	public RSServerDto shutdownServerHard(@NotNull @PathVariable(name = "id") String id,
+			@AuthenticationPrincipal UserDetails userDetails) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Requested shutting down server (hard)");
+		}
+
+		if (authService.isAdmin(authService.authenticate(userDetails))) {
+			return serverDtoService.convert(serverService.shutdownServerHard(userDetails, id));
+		} else {
+			return serverDtoService.convertAbridged(serverService.shutdownServerHard(userDetails, id));
 		}
 	}
 

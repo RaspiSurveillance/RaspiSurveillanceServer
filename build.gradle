@@ -99,7 +99,7 @@ task zip(type: Zip, dependsOn: 'bootJar') {
    include 'README.md'
    include 'scripts/*'
    include 'build/libs/*'
-   archiveName 'raspisurveillance-server-1.4.2.zip'
+   archiveName 'raspisurveillance-server-1.4.3.zip'
    
     // Flatten the hierarchy by setting the path
     // of all files to their respective basename

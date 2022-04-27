@@ -636,6 +636,34 @@
 					"response": []
 				},
 				{
+					"name": "http://localhost:9090/api/servers/<SID>/reset",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <TOKEN>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9090/api/servers/<SID>/reset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"servers",
+								"<SID>",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "http://localhost:9090/api/servers/<SID>/startup",
 					"request": {
 						"method": "PUT",
@@ -664,7 +692,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:9090/api/servers/<SID>/shutdown Copy",
+					"name": "http://localhost:9090/api/servers/<SID>/shutdown",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -686,6 +714,36 @@
 								"servers",
 								"<SID>",
 								"shutdown"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:9090/api/servers/<SID>/shutdown/hard",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer <TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9090/api/servers/<SID>/shutdown/hard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"servers",
+								"<SID>",
+								"shutdown",
+								"<SID>",
+								"hard"
 							]
 						}
 					},
