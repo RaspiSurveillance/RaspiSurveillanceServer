@@ -1,7 +1,5 @@
 package de.calltopower.raspisurveillance.impl.controller;
 
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import de.calltopower.raspisurveillance.impl.dtoservice.RSUserDtoService;
 import de.calltopower.raspisurveillance.impl.requestbody.RSSigninRequestBody;
 import de.calltopower.raspisurveillance.impl.requestbody.RSSignupRequestBody;
 import de.calltopower.raspisurveillance.impl.service.RSAuthService;
+import jakarta.validation.Valid;
 
 /**
  * Authentication controller

@@ -4,7 +4,7 @@ A server for surveillance on a RaspiberryPi.
 
 ## Copyright
 
-2020-2022 Denis Meyer, https://github.com/CallToPower
+2020-2023 Denis Meyer, https://github.com/CallToPower
 
 ## Concept
 
@@ -32,10 +32,10 @@ This software is provided via docker. More information in the producation and de
 
 Available docker images:
 
-- calltopower/raspisurveillance-flyway:1.4.3
-- calltopower/raspisurveillance-db:1.4.3
-- calltopower/raspisurveillance-server:1.4.3
-- calltopower/raspisurveillance-ng:1.4.3
+- calltopower/raspisurveillance-flyway:1.5.0
+- calltopower/raspisurveillance-db:1.5.0
+- calltopower/raspisurveillance-server:1.5.0
+- calltopower/raspisurveillance-ng:1.5.0
 
 The initially created user/password combination is: Admin/password1
 

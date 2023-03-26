@@ -1,7 +1,5 @@
 package de.calltopower.raspisurveillance.impl.controller;
 
-import javax.validation.constraints.NotNull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,7 @@ import de.calltopower.raspisurveillance.impl.dto.RSTranslationsDto;
 import de.calltopower.raspisurveillance.impl.dtoservice.RSLanguagesDtoService;
 import de.calltopower.raspisurveillance.impl.dtoservice.RSTranslationsDtoService;
 import de.calltopower.raspisurveillance.impl.service.RSI18nService;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * I18n controller

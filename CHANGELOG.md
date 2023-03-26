@@ -1,5 +1,17 @@
 # RaspiSurveillanceServer - Changelog
 
+## v1.5.0
+
+- Dependency upgrades, most notable
+	- mariadb 10.6 -> 10.10
+	- flyway 8.5 -> 9.16
+	- openjdk 17 -> eclipse-temurin 17
+	- SpringBoot 2 -> SpringBoot 3
+	- Hibernate 5 -> Hibernate 6
+	- Angular 13 -> Angular 15
+	- Bootstrap 12 -> 14
+	- nginx 1.21 -> 1.23
+
 ## v1.4.3
 
 - Reset server status

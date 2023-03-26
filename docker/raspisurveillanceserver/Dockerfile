@@ -7,7 +7,7 @@ WORKDIR /build/
 
 RUN gradle build --no-daemon
 
-FROM openjdk:17.0.2-jdk-oraclelinux8
+FROM eclipse-temurin:17.0.6_10-jdk
 
 WORKDIR /app
 

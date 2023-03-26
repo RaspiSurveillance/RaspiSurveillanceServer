@@ -2,9 +2,8 @@ package de.calltopower.raspisurveillance.impl.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Embeddable;
-
 import de.calltopower.raspisurveillance.api.model.RSModel;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

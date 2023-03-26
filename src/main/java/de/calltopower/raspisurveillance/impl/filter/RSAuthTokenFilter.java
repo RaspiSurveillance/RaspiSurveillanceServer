@@ -2,11 +2,6 @@ package de.calltopower.raspisurveillance.impl.filter;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +14,10 @@ import de.calltopower.raspisurveillance.api.filter.RSFilter;
 import de.calltopower.raspisurveillance.impl.exception.RSUserException;
 import de.calltopower.raspisurveillance.impl.service.RSUserDetailsService;
 import de.calltopower.raspisurveillance.impl.utils.RSTokenUtils;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * An authentication token filter

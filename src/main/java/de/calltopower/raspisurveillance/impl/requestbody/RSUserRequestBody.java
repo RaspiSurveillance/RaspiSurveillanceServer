@@ -2,11 +2,10 @@ package de.calltopower.raspisurveillance.impl.requestbody;
 
 import java.util.Set;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 import de.calltopower.raspisurveillance.api.requestbody.RSRequestBody;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
